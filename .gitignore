@@ -30,6 +30,7 @@ yarn-error.log*
 
 # API keys and secrets
 *.env
+!example.env
 
 # build artifacts:
 dist
