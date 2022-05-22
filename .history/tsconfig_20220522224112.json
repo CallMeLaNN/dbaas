@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist",
+
+    "declaration": true,
+    "sourceMap": true,
+    "noEmit": false,
+    "incremental": true,
+    "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
+
+    /* Module Resolution Options */
+    "baseUrl": ".",
+    "paths": {},
+    "types": ["node", "express"],
+    "typeRoots": ["./declaration", "./node_modules/@types/"]
+  },
+  "include": ["src/declaration/**/index.d.ts", "src/index.ts", "gulpfile.ts"],
+  "exclude": ["node_modules", ".yarn", ".vscode", "jest.config.js"]
+}

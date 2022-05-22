@@ -1,0 +1,7 @@
+{
+  "quiet": true,
+  "exec": "node -e \"require('directus/start')\"",
+  "ext": "js",
+  "watch": [".env", "./extensions/**/*.js"],
+  "signal": "SIGINT"
+}

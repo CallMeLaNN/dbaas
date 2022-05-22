@@ -1,0 +1,9 @@
+{
+  "quiet": true,
+  "exitcrash": true,
+  "exec": "gulp start",
+  "ext": "ts",
+  "watch": ["gulpfile.ts"],
+  "signal": "SIGINT",
+  "env": { "NODE_ENV": "development" }
+}

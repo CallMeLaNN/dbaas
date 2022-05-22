@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "ESNext",
+    "module": "CommonJS",
+    "lib": ["ESNext"],
+
+    /* Basic Options */
+    "allowJs": true,
+    "checkJs": true,
+    "jsx": "preserve",
+    "isolatedModules": true,
+    "sourceMap": true,
+
+    "rootDir": ".",
+
+    "noEmit": true,
+    "incremental": true,
+    "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
+
+    /* Strict Type-Checking Options */
+    "strict": true,
+
+    /* Additional Checks */
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+
+    /* Module Resolution Options */
+    "baseUrl": ".",
+    "paths": {},
+    "types": ["node"],
+
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+
+    /* Experimental Options */
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "include": ["gulpfile.ts"],
+  "exclude": ["node_modules", ".yarn", ".vscode", "jest.config.js"]
+}

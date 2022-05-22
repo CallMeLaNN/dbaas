@@ -1,0 +1,11 @@
+# Project files:
+node_modules/
+.yarn/*
+.pnp.*
+# jest.config.js
+
+# Jest Istanbul coverage report
+/coverage
+
+# build artifacts:
+dist

@@ -1,0 +1,11 @@
+# https://www.gitpod.io/docs/config-gitpod-file
+
+# Commands to start on workspace startup
+tasks:
+  - init: yarn install && yarn run build
+    command: yarn run start
+
+# Ports to expose on workspace startup
+ports:
+  - port: 8055
+    onOpen: open-preview

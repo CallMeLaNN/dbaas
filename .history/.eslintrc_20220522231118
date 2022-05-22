@@ -1,0 +1,40 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": [
+      "./tsconfig.json"
+      // "./src/tests/tsconfig.json",
+    ],
+    "tsconfigRootDir": "./"
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:eslint-comments/recommended",
+    "plugin:node/recommended",
+    "plugin:jest/recommended",
+    "prettier"
+  ],
+  "plugins": ["@typescript-eslint", "eslint-comments", "jest", "prettier"],
+  "settings": {
+    "node": {
+      "resolvePaths": ["./"],
+      "tryExtensions": [".js", ".json", ".ts"]
+    }
+  },
+  "rules": {
+    "prettier/prettier": "warn",
+    "no-unreachable": "warn",
+    "node/no-unsupported-features/es-syntax": [
+      "error",
+      { "ignores": ["modules"] }
+    ]
+  },
+  "env": {
+    "jest/globals": true
+  }
+}

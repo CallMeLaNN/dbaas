@@ -1,0 +1,19 @@
+{
+  // See http://go.microsoft.com/fwlink/?LinkId=827846 to learn about workspace recommendations.
+  "recommendations": [
+    // Coding Tools
+    "mikestead.dotenv",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "arcanis.vscode-zipfs",
+    "wix.vscode-import-cost",
+    "streetsidesoftware.code-spell-checker",
+    // Extra tools
+    "mhutchie.git-graph",
+    "wayou.vscode-todo-highlight",
+    "VisualStudioExptTeam.vscodeintellicode",
+    // Testing tools
+    "Orta.vscode-jest",
+    "firsttris.vscode-jest-runner"
+  ]
+}

@@ -1,0 +1,12 @@
+# Project files:
+node_modules/
+# .prettierrc
+# .vscode
+.yarn/*
+.pnp.*
+
+# Jest Istanbul coverage report
+/coverage
+
+# build artifacts:
+dist
