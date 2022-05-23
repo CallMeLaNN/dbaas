@@ -1,6 +1,6 @@
 {
   "name": "dbaas",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Database as a service. Expose db to REST and GraphQL.",
   "keywords": [
     "dbaas",
