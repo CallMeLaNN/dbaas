@@ -1,5 +1,6 @@
+export { default as asyncHandler } from "./utils/asyncHandler"
 export { default as createLogger } from "./utils/createLogger"
-export { default as asyncHandler } from "./utils/asyncHandler" //end
+export { default as getConfigFromEnv } from "./utils/getConfigFromEnv"
 export { isObject, isKeyValue, hasProperty } from "./utils/typeGuards"
 export { getItemsService } from "./services"
 
