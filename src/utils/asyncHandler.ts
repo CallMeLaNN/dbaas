@@ -1,66 +1,106 @@
 import type { ErrorRequestHandler, RequestHandler } from "express"
 // eslint-disable-next-line node/no-missing-import
-import type { ParamsDictionary } from "express-serve-static-core"
+import type { RouteParameters } from "express-serve-static-core"
 // eslint-disable-next-line node/no-extraneous-import
 import type { ParsedQs } from "qs"
 
 type ReqHandler<
+  Route extends string,
   ReqBody = unknown,
   ResBody = unknown,
   Locals = Record<string, unknown>,
-> = RequestHandler<ParamsDictionary, ResBody, ReqBody, ParsedQs, Locals>
+> = RequestHandler<RouteParameters<Route>, ResBody, ReqBody, ParsedQs, Locals>
 
 type ErrHandler<
+  Route extends string,
   ReqBody = unknown,
   ResBody = unknown,
   Locals = Record<string, unknown>,
-> = ErrorRequestHandler<ParamsDictionary, ResBody, ReqBody, ParsedQs, Locals>
+> = ErrorRequestHandler<
+  RouteParameters<Route>,
+  ResBody,
+  ReqBody,
+  ParsedQs,
+  Locals
+>
 
 /**
- * Handles promises in routes.
+ * Handles promises in express app or router middleware.
+ *
+ * ### Usage:
+ *
+ * ```js
+ * router.get(
+ *   "/:provider/:override?",
+ *   // eslint-disable-next-line @typescript-eslint/no-misused-promises
+ *   asyncHandler<"/:provider/:override?">(async (req, res, next) => {
+ *     // req.params.provider and req.params.override will be typed here
+ *   }),
+ * )
+ * ```
+ * @param handler express middleware in async/await
+ * @returns Wrapped express middleware to be added into express app/router
  */
 function asyncHandler<
+  Route extends string,
   ReqBody = unknown,
   ResBody = unknown,
   Locals = Record<string, unknown>,
 >(
-  handler: ReqHandler<ReqBody, ResBody, Locals>,
-): ReqHandler<ReqBody, ResBody, Locals>
+  handler: ReqHandler<Route, ReqBody, ResBody, Locals>,
+): ReqHandler<Route, ReqBody, ResBody, Locals>
 
 function asyncHandler<
+  Route extends string,
   ReqBody = unknown,
   ResBody = unknown,
   Locals = Record<string, unknown>,
 >(
-  handler: ErrHandler<ReqBody, ResBody, Locals>,
-): ErrHandler<ReqBody, ResBody, Locals>
+  handler: ErrHandler<Route, ReqBody, ResBody, Locals>,
+): ErrHandler<Route, ReqBody, ResBody, Locals>
 
 function asyncHandler<
+  Route extends string,
   ReqBody = unknown,
   ResBody = unknown,
   Locals = Record<string, unknown>,
 >(
   handler:
-    | ReqHandler<ReqBody, ResBody, Locals>
-    | ErrHandler<ReqBody, ResBody, Locals>,
-): ReqHandler<ReqBody, ResBody, Locals> | ErrHandler<ReqBody, ResBody, Locals> {
+    | ReqHandler<Route, ReqBody, ResBody, Locals>
+    | ErrHandler<Route, ReqBody, ResBody, Locals>,
+):
+  | ReqHandler<Route, ReqBody, ResBody, Locals>
+  | ErrHandler<Route, ReqBody, ResBody, Locals> {
   if (handler.length === 2 || handler.length === 3) {
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    const scoped: ReqHandler<ReqBody, ResBody, Locals> = (req, res, next) =>
+    const scoped: ReqHandler<Route, ReqBody, ResBody, Locals> = (
+      req,
+      res,
+      next,
+    ) =>
       Promise.resolve(
-        (handler as ReqHandler<ReqBody, ResBody, Locals>)(req, res, next),
+        (handler as ReqHandler<Route, ReqBody, ResBody, Locals>)(
+          req,
+          res,
+          next,
+        ),
       ).catch(next)
     return scoped
   } else if (handler.length === 4) {
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    const scoped: ErrHandler<ReqBody, ResBody, Locals> = (
+    const scoped: ErrHandler<Route, ReqBody, ResBody, Locals> = (
       err,
       req,
       res,
       next,
     ) =>
       Promise.resolve(
-        (handler as ErrHandler<ReqBody, ResBody, Locals>)(err, req, res, next),
+        (handler as ErrHandler<Route, ReqBody, ResBody, Locals>)(
+          err,
+          req,
+          res,
+          next,
+        ),
       ).catch(next)
     return scoped
   } else {
