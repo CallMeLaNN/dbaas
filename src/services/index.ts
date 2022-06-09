@@ -1,5 +1,6 @@
 import { ItemsService } from "directus"
 import type { Request } from "express"
+import type { Accountability } from "@directus/shared/dist/esm/types"
 
 import type ExtensionContext from "../types/ExtensionContext"
 import type { FilterHookContext } from "../types/RegisterHook/FilterHookHandler"
@@ -12,6 +13,7 @@ export function getItemsService<
 >(
   collectionName: TCollectionName,
   context: FilterHookContext,
+  accountability?: Partial<Accountability>,
 ): ItemsService<TItem>
 
 export function getItemsService<
@@ -20,6 +22,7 @@ export function getItemsService<
 >(
   collectionName: TCollectionName,
   context: ActionHookContext,
+  accountability?: Partial<Accountability>,
 ): ItemsService<TItem>
 
 export function getItemsService<
@@ -29,6 +32,7 @@ export function getItemsService<
   collectionName: TCollectionName,
   req: Request,
   context: ExtensionContext,
+  accountability?: Partial<Accountability>,
 ): ItemsService<TItem>
 
 export function getItemsService<
@@ -37,15 +41,45 @@ export function getItemsService<
 >(
   collectionName: TCollectionName,
   reqOrFilterCtxOrActionCtx: Request | FilterHookContext | ActionHookContext,
-  context?: ExtensionContext,
+  contextOrAccountability?: ExtensionContext | Partial<Accountability>,
+  accountability?: Partial<Accountability>,
 ): ItemsService<TItem> {
-  const itemsService = new ItemsService<TItem>(collectionName, {
-    schema: reqOrFilterCtxOrActionCtx.schema,
-    accountability: reqOrFilterCtxOrActionCtx.accountability,
-    knex:
-      "database" in reqOrFilterCtxOrActionCtx
-        ? reqOrFilterCtxOrActionCtx.database
-        : context?.database,
-  })
+  let itemsService: ItemsService<TItem>
+  if (
+    "database" in reqOrFilterCtxOrActionCtx &&
+    (contextOrAccountability === undefined || "role" in contextOrAccountability)
+  ) {
+    // 2nd param is FilterHookContext | ActionHookContext
+    // 3rd param is Accountability?
+    const filterCtxOrActionCtx = reqOrFilterCtxOrActionCtx
+    const accountability = contextOrAccountability
+    itemsService = new ItemsService<TItem>(collectionName, {
+      schema: filterCtxOrActionCtx.schema,
+      knex: filterCtxOrActionCtx.database,
+      accountability: {
+        ...filterCtxOrActionCtx.accountability,
+        ...accountability,
+      },
+    })
+  } else if (
+    "url" in reqOrFilterCtxOrActionCtx &&
+    contextOrAccountability &&
+    "database" in contextOrAccountability
+  ) {
+    // 2nd param is express Request
+    // 3rd param is ExtensionContext
+    // 4rd param is Accountability?
+    const req = reqOrFilterCtxOrActionCtx
+    const context = contextOrAccountability
+    itemsService = new ItemsService<TItem>(collectionName, {
+      schema: req.schema,
+      knex: context.database,
+      accountability: req.accountability
+        ? { ...req.accountability, ...accountability }
+        : req.accountability,
+    })
+  } else {
+    throw new Error(`Invalid parameters type passed to ${getItemsService.name}`)
+  }
   return itemsService
 }
