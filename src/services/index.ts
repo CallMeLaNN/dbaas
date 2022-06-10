@@ -47,7 +47,8 @@ export function getItemsService<
   let itemsService: ItemsService<TItem>
   if (
     "database" in reqOrFilterCtxOrActionCtx &&
-    (contextOrAccountability === undefined || "role" in contextOrAccountability)
+    (contextOrAccountability === undefined ||
+      !("database" in contextOrAccountability))
   ) {
     // 2nd param is FilterHookContext | ActionHookContext
     // 3rd param is Accountability?
