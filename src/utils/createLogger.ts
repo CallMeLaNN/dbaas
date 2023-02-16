@@ -1,5 +1,5 @@
-import pino, { LoggerOptions } from "pino"
-import pinoColada from "pino-colada"
+import pino, { Logger, LoggerOptions } from "pino"
+// import pinoColada from "pino-colada"
 
 const isPrettyLog = process.env["LOG_STYLE"] === "pretty"
 const isTest = process.env["NODE_ENV"] === "test"
@@ -11,10 +11,14 @@ export const defaultOptions: LoggerOptions = {
   timestamp: isPrettyLog
     ? () => pino.stdTimeFunctions.isoTime().replace("T", " ")
     : true,
-  prettyPrint: isPrettyLog,
-  prettifier: isPrettyLog ? pinoColada : undefined,
+  // TODO: What to replace this flag?
+  // prettyPrint: isPrettyLog,
+  // prettifier: isPrettyLog ? pinoColada : undefined,
 }
 
-export default function createLogger(name: string, opts?: LoggerOptions) {
+export default function createLogger(
+  name: string,
+  opts?: LoggerOptions,
+): Logger<LoggerOptions> {
   return pino({ ...defaultOptions, name, ...opts })
 }
