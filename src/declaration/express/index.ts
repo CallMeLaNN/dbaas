@@ -1,11 +1,7 @@
 /**
  * Custom properties on the req object in express
  */
-import {
-  Accountability,
-  SchemaOverview,
-  Query,
-} from "@directus/shared/dist/esm/types"
+import { Accountability, SchemaOverview, Query } from "@directus/shared/types"
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace

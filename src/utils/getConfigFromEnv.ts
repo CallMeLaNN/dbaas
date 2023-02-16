@@ -1,7 +1,7 @@
 import camelcase from "camelcase"
 import { set } from "lodash"
 
-import type { Env } from "../types/ExtensionContext"
+import type { Env } from "../types/ExtensionContext.js"
 
 export default function getConfigFromEnv(
   env: Env,

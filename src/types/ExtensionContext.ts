@@ -1,7 +1,7 @@
-import type services from "directus/dist/services"
-import type exceptions from "directus/dist/exceptions"
-import type { getSchema } from "directus/dist/utils/get-schema"
-import type { Emitter } from "directus/dist/emitter"
+import type services from "directus/services/index"
+import type exceptions from "directus/exceptions/index"
+import type { getSchema } from "directus/utils/get-schema"
+import type { Emitter } from "directus/emitter"
 import type { Logger } from "pino"
 import type { Knex } from "knex"
 

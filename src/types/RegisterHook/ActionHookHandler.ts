@@ -2,11 +2,11 @@ import type {
   Accountability,
   SchemaOverview,
   Query,
-} from "@directus/shared/dist/esm/types"
+} from "@directus/shared/types"
 import type { Knex } from "knex"
 
-import type { UnionToIntersection } from "../../utils/types"
-import type SystemModels from "../../models/SystemModels"
+import type { UnionToIntersection } from "../../utils/types.js"
+import type SystemModels from "../../models/SystemModels.js"
 
 /**
  * Action Hook callback context

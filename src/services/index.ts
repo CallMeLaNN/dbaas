@@ -1,11 +1,11 @@
 import { ItemsService } from "directus"
 import type { Request } from "express"
-import type { Accountability } from "@directus/shared/dist/esm/types"
+import type { Accountability } from "@directus/shared/types"
 
-import type ExtensionContext from "../types/ExtensionContext"
-import type { FilterHookContext } from "../types/RegisterHook/FilterHookHandler"
-import type { ActionHookContext } from "../types/RegisterHook/ActionHookHandler"
-import type Models from "../models"
+import type ExtensionContext from "../types/ExtensionContext.js"
+import type { FilterHookContext } from "../types/RegisterHook/FilterHookHandler.js"
+import type { ActionHookContext } from "../types/RegisterHook/ActionHookHandler.js"
+import type Models from "../models/index.js"
 
 export function getItemsService<
   TItem extends Models[TCollectionName],

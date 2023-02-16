@@ -1,15 +1,15 @@
-import type FilterHookHandler from "./FilterHookHandler"
-import type ActionHookHandler from "./ActionHookHandler"
-import type InitHookHandler from "./InitHookHandler"
-import type ScheduleHookHandler from "./ScheduleHookHandler"
-import type ExtensionContext from "../ExtensionContext"
+import type FilterHookHandler from "./FilterHookHandler.js"
+import type ActionHookHandler from "./ActionHookHandler.js"
+import type InitHookHandler from "./InitHookHandler.js"
+import type ScheduleHookHandler from "./ScheduleHookHandler.js"
+import type ExtensionContext from "../ExtensionContext.js"
 
-import Models from "../../models"
+import Models from "../../models/index.js"
 
-export type { default as FilterHookHandler } from "./FilterHookHandler"
-export type { default as ActionHookHandler } from "./ActionHookHandler"
-export type { default as InitHookHandler } from "./InitHookHandler"
-export type { default as ScheduleHookHandler } from "./ScheduleHookHandler"
+export type { default as FilterHookHandler } from "./FilterHookHandler.js"
+export type { default as ActionHookHandler } from "./ActionHookHandler.js"
+export type { default as InitHookHandler } from "./InitHookHandler.js"
+export type { default as ScheduleHookHandler } from "./ScheduleHookHandler.js"
 
 export interface HookHandlers<TModels> {
   filter: FilterHookHandler<TModels>

@@ -1,4 +1,4 @@
-export type SystemModels = {
+type SystemModels = {
   activity: Record<string, unknown>
   collections: Record<string, unknown>
   fields: Record<string, unknown>

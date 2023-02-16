@@ -1,21 +1,21 @@
 import type { ErrorRequestHandler, RequestHandler } from "express"
-// eslint-disable-next-line node/no-missing-import
+// eslint-disable-next-line n/no-missing-import -- The @types/* exist, type only package without js
 import type { RouteParameters } from "express-serve-static-core"
-// eslint-disable-next-line node/no-extraneous-import
+// eslint-disable-next-line n/no-extraneous-import -- The @types/* exist, type only package without js
 import type { ParsedQs } from "qs"
 
 type ReqHandler<
   Route extends string,
   ReqBody = unknown,
   ResBody = unknown,
-  Locals = Record<string, unknown>,
+  Locals extends Record<string, unknown> = Record<string, unknown>,
 > = RequestHandler<RouteParameters<Route>, ResBody, ReqBody, ParsedQs, Locals>
 
 type ErrHandler<
   Route extends string,
   ReqBody = unknown,
   ResBody = unknown,
-  Locals = Record<string, unknown>,
+  Locals extends Record<string, unknown> = Record<string, unknown>,
 > = ErrorRequestHandler<
   RouteParameters<Route>,
   ResBody,
@@ -45,7 +45,7 @@ function asyncHandler<
   Route extends string,
   ReqBody = unknown,
   ResBody = unknown,
-  Locals = Record<string, unknown>,
+  Locals extends Record<string, unknown> = Record<string, unknown>,
 >(
   handler: ReqHandler<Route, ReqBody, ResBody, Locals>,
 ): ReqHandler<Route, ReqBody, ResBody, Locals>
@@ -54,7 +54,7 @@ function asyncHandler<
   Route extends string,
   ReqBody = unknown,
   ResBody = unknown,
-  Locals = Record<string, unknown>,
+  Locals extends Record<string, unknown> = Record<string, unknown>,
 >(
   handler: ErrHandler<Route, ReqBody, ResBody, Locals>,
 ): ErrHandler<Route, ReqBody, ResBody, Locals>
@@ -63,7 +63,7 @@ function asyncHandler<
   Route extends string,
   ReqBody = unknown,
   ResBody = unknown,
-  Locals = Record<string, unknown>,
+  Locals extends Record<string, unknown> = Record<string, unknown>,
 >(
   handler:
     | ReqHandler<Route, ReqBody, ResBody, Locals>

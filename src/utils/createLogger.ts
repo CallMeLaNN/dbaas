@@ -1,4 +1,4 @@
-import pino, { Logger, LoggerOptions } from "pino"
+import { pino, Logger, LoggerOptions } from "pino"
 // import pinoColada from "pino-colada"
 
 const isPrettyLog = process.env["LOG_STYLE"] === "pretty"
