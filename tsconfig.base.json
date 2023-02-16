@@ -2,7 +2,7 @@
   "compilerOptions": {
     /* Basic Options */
     "target": "ESNext",
-    "module": "CommonJS",
+    "module": "NodeNext",
     "lib": ["ESNext"],
 
     /* Basic Options */
@@ -31,6 +31,7 @@
     "baseUrl": ".",
     "paths": {},
     "types": ["node"],
+    "moduleResolution": "nodenext",
 
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
