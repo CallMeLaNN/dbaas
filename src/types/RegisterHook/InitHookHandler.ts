@@ -1,3 +1,5 @@
+import type { Application } from "express"
+
 export type InitHookHandlerBase<
   TName extends string = string,
   TMeta = unknown,
@@ -5,13 +7,13 @@ export type InitHookHandlerBase<
 
 type InitHookHandler = InitHookHandlerBase<"cli.before", { program: unknown }> &
   InitHookHandlerBase<"cli.after", { program: unknown }> &
-  InitHookHandlerBase<"app.before", { app: unknown }> &
-  InitHookHandlerBase<"app.after", { app: unknown }> &
-  InitHookHandlerBase<"routes.before", { app: unknown }> &
-  InitHookHandlerBase<"routes.after", { app: unknown }> &
-  InitHookHandlerBase<"routes.custom.before", { app: unknown }> &
-  InitHookHandlerBase<"routes.custom.after", { app: unknown }> &
-  InitHookHandlerBase<"middlewares.before", { app: unknown }> &
-  InitHookHandlerBase<"middlewares.after", { app: unknown }>
+  InitHookHandlerBase<"app.before", { app: Application }> &
+  InitHookHandlerBase<"app.after", { app: Application }> &
+  InitHookHandlerBase<"routes.before", { app: Application }> &
+  InitHookHandlerBase<"routes.after", { app: Application }> &
+  InitHookHandlerBase<"routes.custom.before", { app: Application }> &
+  InitHookHandlerBase<"routes.custom.after", { app: Application }> &
+  InitHookHandlerBase<"middlewares.before", { app: Application }> &
+  InitHookHandlerBase<"middlewares.after", { app: Application }>
 
 export default InitHookHandler
