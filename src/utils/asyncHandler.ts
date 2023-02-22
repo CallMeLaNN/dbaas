@@ -4,14 +4,41 @@ import type { RouteParameters } from "express-serve-static-core"
 // eslint-disable-next-line n/no-extraneous-import -- The @types/* exist, type only package without js
 import type { ParsedQs } from "qs"
 
-type ReqHandler<
+// Standard RequestHandler
+type VoidReqHandler<
   Route extends string,
   ReqBody = unknown,
   ResBody = unknown,
   Locals extends Record<string, unknown> = Record<string, unknown>,
 > = RequestHandler<RouteParameters<Route>, ResBody, ReqBody, ParsedQs, Locals>
 
-type ErrHandler<
+// RequestHandler that return Promise<void> instead of void
+export type AsyncReqHandler<
+  Route extends string,
+  ReqBody = unknown,
+  ResBody = unknown,
+  Locals extends Record<string, unknown> = Record<string, unknown>,
+> = (
+  ...args: Parameters<
+    RequestHandler<RouteParameters<Route>, ResBody, ReqBody, ParsedQs, Locals>
+  >
+) => Promise<
+  ReturnType<
+    RequestHandler<RouteParameters<Route>, ResBody, ReqBody, ParsedQs, Locals>
+  >
+>
+
+type ReqHandler<
+  Route extends string,
+  ReqBody = unknown,
+  ResBody = unknown,
+  Locals extends Record<string, unknown> = Record<string, unknown>,
+> =
+  | VoidReqHandler<Route, ReqBody, ResBody, Locals>
+  | AsyncReqHandler<Route, ReqBody, ResBody, Locals>
+
+// Standard ErrorRequestHandler
+type VoidErrHandler<
   Route extends string,
   ReqBody = unknown,
   ResBody = unknown,
@@ -23,6 +50,43 @@ type ErrHandler<
   ParsedQs,
   Locals
 >
+
+// ErrorRequestHandler that return Promise<void> instead of void
+type AsyncErrHandler<
+  Route extends string,
+  ReqBody = unknown,
+  ResBody = unknown,
+  Locals extends Record<string, unknown> = Record<string, unknown>,
+> = (
+  ...args: Parameters<
+    ErrorRequestHandler<
+      RouteParameters<Route>,
+      ResBody,
+      ReqBody,
+      ParsedQs,
+      Locals
+    >
+  >
+) => Promise<
+  ReturnType<
+    ErrorRequestHandler<
+      RouteParameters<Route>,
+      ResBody,
+      ReqBody,
+      ParsedQs,
+      Locals
+    >
+  >
+>
+
+type ErrHandler<
+  Route extends string,
+  ReqBody = unknown,
+  ResBody = unknown,
+  Locals extends Record<string, unknown> = Record<string, unknown>,
+> =
+  | VoidErrHandler<Route, ReqBody, ResBody, Locals>
+  | AsyncErrHandler<Route, ReqBody, ResBody, Locals>
 
 /**
  * Handles promises in express app or router middleware.
@@ -48,7 +112,7 @@ function asyncHandler<
   Locals extends Record<string, unknown> = Record<string, unknown>,
 >(
   handler: ReqHandler<Route, ReqBody, ResBody, Locals>,
-): ReqHandler<Route, ReqBody, ResBody, Locals>
+): VoidReqHandler<Route, ReqBody, ResBody, Locals>
 
 function asyncHandler<
   Route extends string,
@@ -57,7 +121,7 @@ function asyncHandler<
   Locals extends Record<string, unknown> = Record<string, unknown>,
 >(
   handler: ErrHandler<Route, ReqBody, ResBody, Locals>,
-): ErrHandler<Route, ReqBody, ResBody, Locals>
+): VoidErrHandler<Route, ReqBody, ResBody, Locals>
 
 function asyncHandler<
   Route extends string,
@@ -69,15 +133,14 @@ function asyncHandler<
     | ReqHandler<Route, ReqBody, ResBody, Locals>
     | ErrHandler<Route, ReqBody, ResBody, Locals>,
 ):
-  | ReqHandler<Route, ReqBody, ResBody, Locals>
-  | ErrHandler<Route, ReqBody, ResBody, Locals> {
+  | VoidReqHandler<Route, ReqBody, ResBody, Locals>
+  | VoidErrHandler<Route, ReqBody, ResBody, Locals> {
   if (handler.length === 2 || handler.length === 3) {
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    const scoped: ReqHandler<Route, ReqBody, ResBody, Locals> = (
+    const scoped: VoidReqHandler<Route, ReqBody, ResBody, Locals> = (
       req,
       res,
       next,
-    ) =>
+    ) => {
       Promise.resolve(
         (handler as ReqHandler<Route, ReqBody, ResBody, Locals>)(
           req,
@@ -85,15 +148,15 @@ function asyncHandler<
           next,
         ),
       ).catch(next)
+    }
     return scoped
   } else if (handler.length === 4) {
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    const scoped: ErrHandler<Route, ReqBody, ResBody, Locals> = (
+    const scoped: VoidErrHandler<Route, ReqBody, ResBody, Locals> = (
       err,
       req,
       res,
       next,
-    ) =>
+    ) => {
       Promise.resolve(
         (handler as ErrHandler<Route, ReqBody, ResBody, Locals>)(
           err,
@@ -102,6 +165,7 @@ function asyncHandler<
           next,
         ),
       ).catch(next)
+    }
     return scoped
   } else {
     throw new Error(`Failed to asyncHandle() function "${handler.name}"`)
