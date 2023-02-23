@@ -75,9 +75,12 @@ export function getItemsService<
     itemsService = new ItemsService<TItem>(collectionName, {
       schema: req.schema,
       knex: context.database,
-      accountability: req.accountability
-        ? { ...req.accountability, ...accountability }
-        : req.accountability,
+      accountability: {
+        // Satisfy required type
+        ...{ role: null },
+        ...req.accountability,
+        ...accountability,
+      },
     })
   } else {
     throw new Error(`Invalid parameters type passed to ${getItemsService.name}`)
