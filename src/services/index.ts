@@ -1,89 +1,76 @@
 import { ItemsService } from "directus"
+import { AbstractServiceOptions } from "directus/types/services"
 import type { Request } from "express"
-import type { Accountability } from "@directus/shared/types"
 
-import type ExtensionContext from "../types/ExtensionContext.js"
-import type { FilterHookContext } from "../types/RegisterHook/FilterHookHandler.js"
-import type { ActionHookContext } from "../types/RegisterHook/ActionHookHandler.js"
 import type Models from "../models/index.js"
+import type { ActionHookContext } from "../types/RegisterHook/ActionHookHandler.js"
+import type { FilterHookContext } from "../types/RegisterHook/FilterHookHandler.js"
 
-export function getItemsService<
+export function createItemsService<
   TItem extends Models[TCollectionName],
   TCollectionName extends keyof Models,
 >(
   collectionName: TCollectionName,
   context: FilterHookContext,
-  accountability?: Partial<Accountability>,
+  options?: Partial<AbstractServiceOptions>,
 ): ItemsService<TItem>
 
-export function getItemsService<
+export function createItemsService<
   TItem extends Models[TCollectionName],
   TCollectionName extends keyof Models,
 >(
   collectionName: TCollectionName,
   context: ActionHookContext,
-  accountability?: Partial<Accountability>,
+  options?: Partial<AbstractServiceOptions>,
 ): ItemsService<TItem>
 
-export function getItemsService<
+export function createItemsService<
   TItem extends Models[TCollectionName],
   TCollectionName extends keyof Models,
 >(
   collectionName: TCollectionName,
   req: Request,
-  context: ExtensionContext,
-  accountability?: Partial<Accountability>,
+  options?: Partial<AbstractServiceOptions>,
 ): ItemsService<TItem>
 
-export function getItemsService<
+export function createItemsService<
   TItem extends Models[TCollectionName],
   TCollectionName extends keyof Models,
 >(
   collectionName: TCollectionName,
   reqOrFilterCtxOrActionCtx: Request | FilterHookContext | ActionHookContext,
-  contextOrAccountability?: ExtensionContext | Partial<Accountability>,
-  accountability?: Partial<Accountability>,
+  options?: Partial<AbstractServiceOptions>,
 ): ItemsService<TItem> {
   let itemsService: ItemsService<TItem>
-  if (
-    "database" in reqOrFilterCtxOrActionCtx &&
-    (contextOrAccountability === undefined ||
-      !("database" in contextOrAccountability))
-  ) {
+  if ("database" in reqOrFilterCtxOrActionCtx) {
     // 2nd param is FilterHookContext | ActionHookContext
-    // 3rd param is Accountability?
     const filterCtxOrActionCtx = reqOrFilterCtxOrActionCtx
-    const accountability = contextOrAccountability
     itemsService = new ItemsService<TItem>(collectionName, {
       schema: filterCtxOrActionCtx.schema,
       knex: filterCtxOrActionCtx.database,
+      ...options,
       accountability: {
         ...filterCtxOrActionCtx.accountability,
-        ...accountability,
+        ...options?.accountability,
       },
     })
-  } else if (
-    "url" in reqOrFilterCtxOrActionCtx &&
-    contextOrAccountability &&
-    "database" in contextOrAccountability
-  ) {
+  } else if ("url" in reqOrFilterCtxOrActionCtx) {
     // 2nd param is express Request
-    // 3rd param is ExtensionContext
-    // 4rd param is Accountability?
     const req = reqOrFilterCtxOrActionCtx
-    const context = contextOrAccountability
     itemsService = new ItemsService<TItem>(collectionName, {
       schema: req.schema,
-      knex: context.database,
+      ...options,
       accountability: {
         // Satisfy required type
         ...{ role: null },
         ...req.accountability,
-        ...accountability,
+        ...options?.accountability,
       },
     })
   } else {
-    throw new Error(`Invalid parameters type passed to ${getItemsService.name}`)
+    throw new Error(
+      `Invalid parameters type passed to ${createItemsService.name}`,
+    )
   }
   return itemsService
 }

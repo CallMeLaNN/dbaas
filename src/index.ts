@@ -2,7 +2,7 @@ export { default as asyncHandler } from "./utils/asyncHandler.js"
 export { default as createLogger } from "./utils/createLogger.js"
 export { default as getConfigFromEnv } from "./utils/getConfigFromEnv.js"
 export { isObject, isKeyValue, hasProperty } from "./utils/typeGuards.js"
-export { getItemsService } from "./services/index.js"
+export { createItemsService } from "./services/index.js"
 
 export type { default as RegisterEndpoint } from "./types/RegisterEndpoint/index.js"
 export type { default as RegisterHook } from "./types/RegisterHook/index.js"
