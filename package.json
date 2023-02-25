@@ -39,7 +39,6 @@
   },
   "dependencies": {
     "@directus/shared": "9.21.2",
-    "@types/express": "^4",
     "@types/geojson": "7946.0.8",
     "@types/pino": "6.3",
     "axios": "^0.24.0",
