@@ -11,7 +11,7 @@ export type { default as ActionHookHandler } from "./ActionHookHandler.js"
 export type { default as InitHookHandler } from "./InitHookHandler.js"
 export type { default as ScheduleHookHandler } from "./ScheduleHookHandler.js"
 
-export interface HookHandlers<TModels> {
+export interface HookHandlers<TModels extends Models = Models> {
   filter: FilterHookHandler<TModels>
   action: ActionHookHandler<TModels>
   init: InitHookHandler

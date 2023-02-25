@@ -8,6 +8,8 @@ import type { Knex } from "knex"
 import type { UnionToIntersection } from "../../utils/types.js"
 import type SystemModels from "../../models/SystemModels.js"
 
+import Models from "../../models/index.js"
+
 /**
  * Action Hook callback context
  */
@@ -159,13 +161,14 @@ export type SystemCollectionActionHookHandlers<TModels> = UnionToIntersection<
   AllSystemCollectionActionHookHandlerModels<TModels>
 >
 
-type ActionHookHandler<TModels> = ServerStartActionHookHandler &
-  ServerStopActionHookHandler &
-  ResponseActionHookHandler &
-  AuthLoginActionHookHandler &
-  FilesUploadActionHookHandler &
-  ItemCollectionActionHookHandlers<TModels> &
-  SystemCollectionActionHookHandlers<SystemModels> &
-  ActionHookHandlerBase
+type ActionHookHandler<TModels extends Models = Models> =
+  ServerStartActionHookHandler &
+    ServerStopActionHookHandler &
+    ResponseActionHookHandler &
+    AuthLoginActionHookHandler &
+    FilesUploadActionHookHandler &
+    ItemCollectionActionHookHandlers<TModels> &
+    SystemCollectionActionHookHandlers<SystemModels> &
+    ActionHookHandlerBase
 
 export default ActionHookHandler

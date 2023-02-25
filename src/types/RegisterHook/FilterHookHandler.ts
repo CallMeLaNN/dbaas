@@ -7,6 +7,7 @@ import type { Knex } from "knex"
 
 import type { UnionToIntersection } from "../../utils/types.js"
 import type SystemModels from "../../models/SystemModels.js"
+import Models from "../../models/index.js"
 
 /**
  * Filter Hook callback context
@@ -174,13 +175,14 @@ export type SystemCollectionFilterHookHandlers<TModels> = UnionToIntersection<
   AllSystemCollectionFilterHookHandler<TModels>
 >
 
-type FilterHookHandler<TModels> = RequestNotFoundFilterHookHandler &
-  RequestErrorFilterHookHandler &
-  DatabaseErrorFilterHookHandler &
-  AuthLoginFilterHookHandler &
-  AuthJwtFilterHookHandler &
-  ItemCollectionFilterHookHandlers<TModels> &
-  SystemCollectionFilterHookHandlers<SystemModels> &
-  FilterHookHandlerBase
+type FilterHookHandler<TModels extends Models = Models> =
+  RequestNotFoundFilterHookHandler &
+    RequestErrorFilterHookHandler &
+    DatabaseErrorFilterHookHandler &
+    AuthLoginFilterHookHandler &
+    AuthJwtFilterHookHandler &
+    ItemCollectionFilterHookHandlers<TModels> &
+    SystemCollectionFilterHookHandlers<SystemModels> &
+    FilterHookHandlerBase
 
 export default FilterHookHandler
