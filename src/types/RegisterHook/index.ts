@@ -6,8 +6,14 @@ import type ExtensionContext from "../ExtensionContext.js"
 
 import Models from "../../models/index.js"
 
-export type { default as FilterHookHandler } from "./FilterHookHandler.js"
-export type { default as ActionHookHandler } from "./ActionHookHandler.js"
+export type {
+  default as FilterHookHandler,
+  FilterHookContext,
+} from "./FilterHookHandler.js"
+export type {
+  default as ActionHookHandler,
+  ActionHookContext,
+} from "./ActionHookHandler.js"
 export type { default as InitHookHandler } from "./InitHookHandler.js"
 export type { default as ScheduleHookHandler } from "./ScheduleHookHandler.js"
 
