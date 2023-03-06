@@ -1,5 +1,5 @@
 import { ItemsService } from "directus"
-import { AbstractServiceOptions } from "directus/types/services"
+import type { AbstractServiceOptions } from "directus/types/services"
 import type { Request } from "express"
 
 import type Models from "../models/index.js"
