@@ -11,7 +11,7 @@ import type ExtensionContext from "../types/ExtensionContext.js"
 import type { ActionHookContext } from "../types/RegisterHook/ActionHookHandler.js"
 import type { FilterHookContext } from "../types/RegisterHook/FilterHookHandler.js"
 import createItemsService from "./createItemsService.js"
-// import getUserAccountability from "./getUserAccountability.js"
+import getUserAccountability from "./getUserAccountability.js"
 
 /** Services instance created per request or filter/action context */
 abstract class ServicesBase {
@@ -59,11 +59,10 @@ abstract class ServicesBase {
         "You cannot login after ItemsService has been initialized",
       )
     }
-    const accountability = await Promise.resolve(undefined) // not implemented yet
-    // await getUserAccountability(
-    //   this.#requestOrHookContext,
-    //   userId,
-    // )
+    const accountability = await getUserAccountability(
+      this.#requestOrHookContext,
+      userId,
+    )
     if (!accountability) {
       throw new InvalidCredentialsException("User not found")
     }
