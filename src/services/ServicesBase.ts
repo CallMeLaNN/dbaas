@@ -53,23 +53,31 @@ abstract class ServicesBase {
     return this.#options
   }
 
-  async loginAs(userId: string) {
-    if (this.#itemsServices) {
+  loginAsAdmin() {
+    if (Object.keys(this.#itemsServices).length > 0) {
       throw new InvalidConfigException(
-        "You cannot login after ItemsService has been initialized",
+        "You cannot login after any ItemsService has been initialized",
       )
     }
-    const accountability = await Promise.resolve(undefined) // not implemented yet
-    // await getUserAccountability(
+    // const accountability = await getUserAccountability(
     //   this.#requestOrHookContext,
     //   userId,
     // )
-    if (!accountability) {
-      throw new InvalidCredentialsException("User not found")
-    }
+    // if (!accountability) {
+    //   throw new InvalidCredentialsException("User not found")
+    // }
+
     this.#options = {
       ...this.#options,
-      accountability: { ...this.#options?.accountability, ...accountability },
+      accountability: {
+        // satisfy TypeScript
+        role: null,
+        ...this.#options?.accountability,
+        // For now we can't login as any user/role to keep activity record.
+        // The accountability.permissions must be set based on the user/role
+        // There is an issue importing getPermissions or even fetch using knex directly.
+        admin: true,
+      },
     }
   }
 
